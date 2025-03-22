@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplex Method Solution</title>
+    <!-- MathJax for rendering LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            margin: 10px 0;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        ol, ul {
+            margin: 10px 0 10px 20px;
+        }
+        .final-answer {
+            border: 1px solid black;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+        }
+        @media (max-width: 600px) {
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Simplex Method Solution</h1>
+
+    ## Problem Statement
+    <h2>Problem Statement</h2>
+    <p>
+        Maximize \( Z = 3x_1 + 2x_2 + 4x_3 \) subject to the constraints:
+    </p>
+    <ul>
+        <li>\( 2x_1 + 3x_2 \leq 8 \)</li>
+        <li>\( 2x_2 + 5x_3 \leq 10 \)</li>
+        <li>\( x_1, x_2, x_3 \geq 0 \)</li>
+    </ul>
+    <p>
+        We will solve this linear programming problem using the simplex method, introducing slack variables \( S_1 \) and \( S_2 \) to convert the inequalities into equalities.
+    </p>
+
+    ## Initial Tableau
+    <h2>Initial Tableau</h2>
+    <p>
+        We start with an initial basic feasible solution where the slack variables \( S_1 \) and \( S_2 \) are basic, and \( x_1, x_2, x_3 \) are non-basic (set to zero). Thus:
+    </p>
+    <ul>
+        <li>\( S_1 = 8 \)</li>
+        <li>\( S_2 = 10 \)</li>
+        <li>\( Z = 0 \)</li>
+    </ul>
+    <p>
+        The \( c_j \) values are the coefficients from the objective function: 3 for \( x_1 \), 2 for \( x_2 \), 4 for \( x_3 \), and 0 for \( S_1 \) and \( S_2 \). The initial tableau is:
+    </p>
+    <table>
+        <tr>
+            <th>\( c_j \)</th>
+            <th>\( B \)</th>
+            <th>\( b \)</th>
+            <th>\( x_1 \)</th>
+            <th>\( x_2 \)</th>
+            <th>\( x_3 \)</th>
+            <th>\( S_1 \)</th>
+            <th>\( S_2 \)</th>
+            <th>Min Ratio</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>\( S_1 \)</td>
+            <td>8</td>
+            <td>2</td>
+            <td>3</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>\( S_2 \)</td>
+            <td>10</td>
+            <td>0</td>
+            <td>2</td>
+            <td>5</td>
+            <td>0</td>
+            <td>1</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>\( Z \)</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>\( c_j - z_j \)</td>
+            <td></td>
+            <td>3</td>
+            <td>2</td>
+            <td>4</td>
+            <td>0</td>
+            <td>0</td>
+            <td></td>
+        </tr>
+    </table>
+    <p>
+        The positive values in the \( c_j - z_j \) row (3, 2, 4) indicate that the solution is not optimal. We select the entering variable with the largest positive value: \( x_3 \) with \( c_j - z_j = 4 \).
+    </p>
+
+    ## First Iteration – Pivot on \( x_3 \)
+    <h2>First Iteration – Pivot on \( x_3 \)</h2>
+    <p><strong>Steps:</strong></p>
+    <ul>
+        <li><strong>Entering Variable</strong>: \( x_3 \) (since \( c_j - z_j = 4 \) is the largest positive value).</li>
+        <li><strong>Pivot Column</strong>: \( x_3 \) column coefficients are 0 and 5.</li>
+        <li><strong>Min Ratio Test</strong>: For rows where the pivot column coefficient > 0:
+            <ul>
+                <li>\( S_1 \): \( 8 / 0 \), not applicable (coefficient is 0).</li>
+                <li>\( S_2 \): \( 10 / 5 = 2 \).</li>
+            </ul>
+            Minimum ratio is 2, so \( S_2 \) leaves.
+        </li>
+        <li><strong>Leaving Variable</strong>: \( S_2 \).</li>
+        <li><strong>Pivot Element</strong>: 5 (intersection of \( S_2 \) row and \( x_3 \) column).</li>
+    </ul>
+    <p><strong>Row Operations:</strong></p>
+    <ol>
+        <li><strong>New \( x_3 \) Row</strong>: \( S_2 \) row ÷ 5 = [0, \( \frac{2}{5} \), 1, 0, \( \frac{1}{5} \), \( \frac{10}{5} = 2 \)].</li>
+        <li><strong>New \( S_1 \) Row</strong>: Unchanged since \( x_3 \) coefficient is 0: [2, 3, 0, 1, 0, 8].</li>
+        <li><strong>New \( Z \) Row</strong>: Update using \( c_B \): \( S_1 = 0 \), \( x_3 = 4 \).
+            <ul>
+                <li>For each column, \( z_j = 0 \cdot a_{1j} + 4 \cdot a_{2j} \):</li>
+                <li>\( x_1 \): \( 0 \cdot 2 + 4 \cdot 0 = 0 \)</li>
+                <li>\( x_2 \): \( 0 \cdot 3 + 4 \cdot \frac{2}{5} = \frac{8}{5} \)</li>
+                <li>\( x_3 \): \( 0 \cdot 0 + 4 \cdot 1 = 4 \)</li>
+                <li>\( S_1 \): \( 0 \cdot 1 + 4 \cdot 0 = 0 \)</li>
+                <li>\( S_2 \): \( 0 \cdot 0 + 4 \cdot \frac{1}{5} = \frac{4}{5} \)</li>
+                <li>\( b \): \( 0 \cdot 8 + 4 \cdot 2 = 8 \)</li>
+                <li>\( c_j - z_j \): Subtract from \( c_j \):
+                    <ul>
+                        <li>\( x_1 \): \( 3 - 0 = 3 \)</li>
+                        <li>\( x_2 \): \( 2 - \frac{8}{5} = \frac{10}{5} - \frac{8}{5} = \frac{2}{5} \)</li>
+                        <li>\( x_3 \): \( 4 - 4 = 0 \)</li>
+                        <li>\( S_1 \): \( 0 - 0 = 0 \)</li>
+                        <li>\( S_2 \): \( 0 - \frac{4}{5} = -\frac{4}{5} \)</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
+    <p>The updated tableau is:</p>
+    <table>
+        <tr>
+            <th>\( c_j \)</th>
+            <th>\( B \)</th>
+            <th>\( b \)</th>
+            <th>\( x_1 \)</th>
+            <th>\( x_2 \)</th>
+            <th>\( x_3 \)</th>
+            <th>\( S_1 \)</th>
+            <th>\( S_2 \)</th>
+            <th>Min Ratio</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>\( S_1 \)</td>
+            <td>8</td>
+            <td>2</td>
+            <td>3</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>\( x_3 \)</td>
+            <td>2</td>
+            <td>0</td>
+            <td>\( \frac{2}{5} \)</td>
+            <td>1</td>
+            <td>0</td>
+            <td>\( \frac{1}{5} \)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>\( Z \)</td>
+            <td>8</td>
+            <td>0</td>
+            <td>\( \frac{8}{5} \)</td>
+            <td>4</td>
+            <td>0</td>
+            <td>\( \frac{4}{5} \)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>\( c_j - z_j \)</td>
+            <td></td>
+            <td>3</td>
+            <td>\( \frac{2}{5} \)</td>
+            <td>0</td>
+            <td>0</td>
+            <td>\( -\frac{4}{5} \)</td>
+            <td></td>
+        </tr>
+    </table>
+    <p>
+        Since there are still positive values in the \( c_j - z_j \) row (e.g., 3 and \( \frac{2}{5} \)), the solution is not yet optimal. We proceed to the next iteration.
+    </p>
+
+    ## Second Iteration – Pivot on \( x_1 \)
+    <h2>Second Iteration – Pivot on \( x_1 \)</h2>
+    <p><strong>Steps:</strong></p>
+    <ul>
+        <li><strong>Entering Variable</strong>: \( x_1 \) (since \( c_j - z_j = 3 \) is the largest positive value).</li>
+        <li><strong>Pivot Column</strong>: \( x_1 \) column coefficients are 2 and 0.</li>
+        <li><strong>Min Ratio Test</strong>: For rows where the pivot column coefficient > 0:
+            <ul>
+                <li>\( S_1 \): \( 8 / 2 = 4 \)</li>
+                <li>\( x_3 \): \( 2 / 0 \), not applicable.</li>
+            </ul>
+            Minimum ratio is 4, so \( S_1 \) leaves.
+        </li>
+        <li><strong>Leaving Variable</strong>: \( S_1 \).</li>
+        <li><strong>Pivot Element</strong>: 2 (intersection of \( S_1 \) row and \( x_1 \) column).</li>
+    </ul>
+    <p><strong>Row Operations:</strong></p>
+    <ol>
+        <li><strong>New \( x_1 \) Row</strong>: \( S_1 \) row ÷ 2 = [1, \( \frac{3}{2} \), 0, \( \frac{1}{2} \), 0, \( \frac{8}{2} = 4 \)].</li>
+        <li><strong>New \( x_3 \) Row</strong>: Unchanged since \( x_1 \) coefficient is 0: [0, \( \frac{2}{5} \), 1, 0, \( \frac{1}{5} \), 2].</li>
+        <li><strong>New \( Z \) Row</strong>: Update using \( c_B \): \( x_1 = 3 \), \( x_3 = 4 \).
+            <ul>
+                <li>For each column, \( z_j = 3 \cdot a_{1j} + 4 \cdot a_{2j} \):</li>
+                <li>\( x_1 \): \( 3 \cdot 1 + 4 \cdot 0 = 3 \)</li>
+                <li>\( x_2 \): \( 3 \cdot \frac{3}{2} + 4 \cdot \frac{2}{5} = \frac{9}{2} + \frac{8}{5} = \frac{45}{10} + \frac{16}{10} = \frac{61}{10} \)</li>
+                <li>\( x_3 \): \( 3 \cdot 0 + 4 \cdot 1 = 4 \)</li>
+                <li>\( S_1 \): \( 3 \cdot \frac{1}{2} + 4 \cdot 0 = \frac{3}{2} \)</li>
+                <li>\( S_2 \): \( 3 \cdot 0 + 4 \cdot \frac{1}{5} = \frac{4}{5} \)</li>
+                <li>\( b \): \( 3 \cdot 4 + 4 \cdot 2 = 12 + 8 = 20 \)</li>
+                <li>\( c_j - z_j \):
+                    <ul>
+                        <li>\( x_1 \): \( 3 - 3 = 0 \)</li>
+                        <li>\( x_2 \): \( 2 - \frac{61}{10} = \frac{20}{10} - \frac{61}{10} = -\frac{41}{10} \)</li>
+                        <li>\( x_3 \): \( 4 - 4 = 0 \)</li>
+                        <li>\( S_1 \): \( 0 - \frac{3}{2} = -\frac{3}{2} \)</li>
+                        <li>\( S_2 \): \( 0 - \frac{4}{5} = -\frac{4}{5} \)</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
+    <p>The updated tableau is:</p>
+    <table>
+        <tr>
+            <th>\( c_j \)</th>
+            <th>\( B \)</th>
+            <th>\( b \)</th>
+            <th>\( x_1 \)</th>
+            <th>\( x_2 \)</th>
+            <th>\( x_3 \)</th>
+            <th>\( S_1 \)</th>
+            <th>\( S_2 \)</th>
+            <th>Min Ratio</th>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>\( x_1 \)</td>
+            <td>4</td>
+            <td>1</td>
+            <td>\( \frac{3}{2} \)</td>
+            <td>0</td>
+            <td>\( \frac{1}{2} \)</td>
+            <td>0</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>\( x_3 \)</td>
+            <td>2</td>
+            <td>0</td>
+            <td>\( \frac{2}{5} \)</td>
+            <td>1</td>
+            <td>0</td>
+            <td>\( \frac{1}{5} \)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>\( Z \)</td>
+            <td>20</td>
+            <td>3</td>
+            <td>\( \frac{61}{10} \)</td>
+            <td>4</td>
+            <td>\( \frac{3}{2} \)</td>
+            <td>\( \frac{4}{5} \)</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>\( c_j - z_j \)</td>
+            <td></td>
+            <td>0</td>
+            <td>\( -\frac{41}{10} \)</td>
+            <td>0</td>
+            <td>\( -\frac{3}{2} \)</td>
+            <td>\( -\frac{4}{5} \)</td>
+            <td></td>
+        </tr>
+    </table>
+    <p>
+        All values in the \( c_j - z_j \) row are now non-positive (\( \leq 0 \)), indicating that the solution is optimal.
+    </p>
+
+    ## Final Solution
+    <h2>Final Solution</h2>
+    <div class="final-answer">
+        <p><strong>Optimal Solution:</strong></p>
+        <p>
+            From the final tableau:
+            - \( x_1 = 4 \)
+            - \( x_3 = 2 \)
+            - \( x_2 = 0 \) (non-basic)
+            - \( S_1 = 0 \) (non-basic)
+            - \( S_2 = 0 \) (non-basic)
+            - \( Z = 20 \)
+        </p>
+        <p>The optimal value of the objective function is \( Z = 20 \) at \( x_1 = 4 \), \( x_2 = 0 \), \( x_3 = 2 \).</p>
+    </div>
+
+    ## Verification
+    <h2>Verification</h2>
+    <p>
+        Substitute \( x_1 = 4 \), \( x_2 = 0 \), \( x_3 = 2 \) into the objective function and constraints:
+    </p>
+    <ul>
+        <li><strong>Objective Function</strong>: \( Z = 3x_1 + 2x_2 + 4x_3 = 3 \cdot 4 + 2 \cdot 0 + 4 \cdot 2 = 12 + 0 + 8 = 20 \), matches the tableau.</li>
+        <li><strong>Constraint 1</strong>: \( 2x_1 + 3x_2 = 2 \cdot 4 + 3 \cdot 0 = 8 \leq 8 \), satisfied.</li>
+        <li><strong>Constraint 2</strong>: \( 2x_2 + 5x_3 = 2 \cdot 0 + 5 \cdot 2 = 0 + 10 = 10 \leq 10 \), satisfied.</li>
+        <li><strong>Non-negativity</strong>: \( x_1 = 4 \geq 0 \), \( x_2 = 0 \geq 0 \), \( x_3 = 2 \geq 0 \), satisfied.</li>
+    </ul>
+    <p>
+        The solution satisfies all constraints and matches the computed \( Z \), confirming its correctness.
+    </p>
+</body>
+</html>
